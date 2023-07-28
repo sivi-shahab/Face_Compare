@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o output
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: compreface-api
+  name: compreface-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: compreface-api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o output
+        kompose.version: 1.30.0 (9d8dcb518)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/subcenter-arcface-r100-gpu-default: "true"
+        io.kompose.service: compreface-api
+    spec:
+      containers:
+        - env:
+            - name: API_JAVA_OPTS
+              value: -Xmx8g
+            - name: CONNECTION_TIMEOUT
+              value: "10000"
+            - name: MAX_FILE_SIZE
+              value: 5MB
+            - name: MAX_REQUEST_SIZE
+              value: 10MB
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_URL
+              value: jdbc:postgresql://compreface-postgres-db:5432/frs
+            - name: POSTGRES_USER
+              value: postgres
+            - name: READ_TIMEOUT
+              value: "60000"
+            - name: SAVE_IMAGES_TO_DB
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+          image: exadel/compreface-api:1.1.0
+          name: compreface-api
+          resources: {}
+      restartPolicy: Always
+status: {}

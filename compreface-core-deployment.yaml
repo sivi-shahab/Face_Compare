@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o output
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: compreface-core
+  name: compreface-core
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: compreface-core
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml -o output
+        kompose.version: 1.30.0 (9d8dcb518)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/subcenter-arcface-r100-gpu-default: "true"
+        io.kompose.service: compreface-core
+    spec:
+      containers:
+        - env:
+            - name: IMG_LENGTH_LIMIT
+              value: "640"
+            - name: ML_PORT
+              value: "3000"
+            - name: UWSGI_PROCESSES
+              value: "2"
+            - name: UWSGI_THREADS
+              value: "1"
+          image: exadel/compreface-core:1.1.0-arcface-r100-gpu
+          name: compreface-core
+          resources: {}
+      restartPolicy: Always
+status: {}
