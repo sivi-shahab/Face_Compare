@@ -27,7 +27,7 @@ spec:
       {{- if .Values.deploy.enabled }}
       #{{ .Values.deploy.resources | toYaml | nindent 6 }}
       resources:
-        limits:
+        - limits:
           nvidia.com/gpu: "{{ .Values.deploy.gpuCount }}"
       {{- end }}
 ---
