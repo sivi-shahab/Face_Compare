@@ -23,6 +23,10 @@ spec:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
       restartPolicy: Always
+      # Add the deploy section here
+      {{- if .Values.deploy.enabled }}
+      {{ .Values.deploy.resources | toYaml | nindent 6 }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service

@@ -117,3 +117,13 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Add the deploy section here
+deploy:
+  enabled: true  # Set this to true to enable the resources block in the template
+  resources:
+    reservations:
+      devices:
+        - driver: nvidia
+          count: all
+          capabilities: [gpu]
