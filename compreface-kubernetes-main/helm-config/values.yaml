@@ -5,9 +5,9 @@
 replicaCount: 1
 
 postgres:
-  repository: postgres
+  repository: exadel/compreface-postgres-db
   pullPolicy: Always
-  tag: 11.5
+  tag: 1.1.0
   db_name: frs
   db_port: 5432
   db_password: postgres
@@ -121,9 +121,10 @@ affinity: {}
 # Add the deploy section here
 deploy:
   enabled: true  # Set this to true to enable the resources block in the template
-  resources:
-    reservations:
-      devices:
-        - driver: nvidia
-          count: all
-          capabilities: [gpu]
+  gpuCount: 1
+  # resources:
+  #   reservations:
+  #     devices:
+  #       - driver: nvidia
+  #         count: all
+  #         capabilities: [gpu]
