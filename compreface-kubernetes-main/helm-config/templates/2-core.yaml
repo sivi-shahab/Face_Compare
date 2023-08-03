@@ -23,14 +23,14 @@ spec:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
       restartPolicy: Always
-      {{- if .Values.deploy.enabled }}
+        {{- if .Values.deploy.enabled }}
         resources:
           reservations:
             devices:
               - driver: nvidia
                 count: all
                 capabilities: [gpu]
-      {{- end }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: Service
