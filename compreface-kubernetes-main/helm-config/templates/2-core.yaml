@@ -20,17 +20,17 @@ spec:
               value: "{{ .Values.core.port }}"
           image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
           ports:
-          - containerPort: {{ .Values.core.port }}
-          name: {{ .Values.core.name }}
-      restartPolicy: Always
-        {{- if .Values.deploy.enabled }}
-        resources:
-          reservations:
-            devices:
-              - driver: nvidia
-                count: all
-                capabilities: [gpu]
-        {{- end }}
+            - containerPort: {{ .Values.core.port }}
+              name: {{ .Values.core.name }}
+          restartPolicy: Always
+          {{- if .Values.deploy.enabled }}
+          resources:  # Correct indentation for the if statement
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: all
+                  capabilities: [gpu]
+          {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -39,6 +39,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-      app: core
+    app: core
   ports:
-  - port: {{ .Values.core.port }}
+    - port: {{ .Values.core.port }}
