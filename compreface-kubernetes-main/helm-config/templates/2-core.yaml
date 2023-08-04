@@ -27,7 +27,7 @@ spec:
               value: "{{ .Values.uwsgi_processes | default "2" }}"
             - name: UWSGI_THREADS
               value: "{{ .Values.uwsgi_threads | default "1" }}"
-          restartPolicy: Always
+      restartPolicy: Always
 
 
 ---
