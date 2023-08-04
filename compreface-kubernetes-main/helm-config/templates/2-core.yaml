@@ -2,31 +2,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: compreface-core
+  labels:
+    app: core
+  name: {{ .Values.core.name }}
 spec:
-  replicas: 1 # You can adjust the number of replicas as needed
+  replicas: {{ .Values.core.replicas }} # You can adjust the number of replicas as needed
   selector:
     matchLabels:
-      app: compreface-core
+      app: core
   template:
     metadata:
       labels:
-        app: compreface-core
+        app: core
     spec:
       containers:
-        - name: compreface-core
-          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
-          ports:
-            - containerPort: 3000
-          env:
+        - env:
             - name: ML_PORT
-              value: "3000"
+              value: "{{ .Values.core.port }}"
             - name: IMG_LENGTH_LIMIT
               value: "{{ .Values.max_detect_size }}"
             - name: UWSGI_PROCESSES
               value: "{{ .Values.uwsgi_processes | default "2" }}"
             - name: UWSGI_THREADS
               value: "{{ .Values.uwsgi_threads | default "1" }}"
+          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
+          ports:
+          - containerPort: {{ .Values.core.port }}
+          name: {{ .Values.core.name }}
       restartPolicy: Always
 
 
