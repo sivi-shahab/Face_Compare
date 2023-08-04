@@ -15,22 +15,20 @@ spec:
         app: core
     spec:
       containers:
-        - env:
+        - name: {{ .Values.core.name }}  # Add the name field for the container
+          env:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
           image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
           ports:
             - containerPort: {{ .Values.core.port }}
-              name: {{ .Values.core.name }}
-          restartPolicy: Always
-          {{- if .Values.deploy.enabled }}
-          resources:  # Correct indentation for the if statement
+          resources:  # Correct indentation for resources
             reservations:
               devices:
                 - driver: nvidia
                   count: all
                   capabilities: [gpu]
-          {{- end }}
+          restartPolicy: Always  # Correct indentation for restartPolicy
 ---
 apiVersion: v1
 kind: Service
