@@ -20,6 +20,10 @@ core:
   tag: 1.1.0-arcface-r100-gpu
   port: 3000
   replicas: 1
+  maxDetectSize: 640
+  uwsgiProcesses: 2
+  uwsgiThreads: 1
+  gpuCount: 1
   name: cf-core
 
 api:
@@ -119,9 +123,9 @@ tolerations: []
 affinity: {}
 
 # Add the deploy section here
-deploy:
-  enabled: true  # Set this to true to enable the resources block in the template
-  gpuCount: 1
+#deploy:
+# enabled: true  # Set this to true to enable the resources block in the template
+  #gpuCount: 1
   # resources:
   #   reservations:
   #     devices:

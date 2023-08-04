@@ -1,11 +1,12 @@
+# templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: compreface-core
   labels:
     app: core
-  name: {{ .Values.core.name }}
 spec:
-  replicas: {{ .Values.core.replicas }}
+  replicas: 1  # You can set the desired number of replicas using .Values.core.replicas if needed
   selector:
     matchLabels:
       app: core
@@ -15,18 +16,23 @@ spec:
         app: core
     spec:
       containers:
-        - name: {{ .Values.core.name }}
+        - name: compreface-core
+          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
           env:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
-          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
-          ports:
-            - containerPort: {{ .Values.core.port }}
-          resources:  # Define GPU resources here
+            - name: IMG_LENGTH_LIMIT
+              value: "{{ .Values.maxDetectSize }}"
+            - name: UWSGI_PROCESSES
+              value: "{{ .Values.uwsgiProcesses | default "2" }}"
+            - name: UWSGI_THREADS
+              value: "{{ .Values.uwsgiThreads | default "1" }}"
+          resources:
             limits:
-              nvidia.com/gpu: 1
+              nvidia.com/gpu: {{ .Values.gpuCount }}
             requests:
-              nvidia.com/gpu: 1
+              nvidia.com/gpu: {{ .Values.gpuCount }}
+
 ---
 apiVersion: v1
 kind: Service
