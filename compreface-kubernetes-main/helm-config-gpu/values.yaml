@@ -50,6 +50,10 @@ fe:
   replicas: 1
   name: cf-fe
 
+gpu:
+  type: "nvidia-tesla-t4"  # Replace this with your desired GPU_TYPE
+  quantity: 1
+
 
 imagePullSecrets: []
 nameOverride: ""
