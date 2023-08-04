@@ -30,11 +30,11 @@ spec:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
           resources:
+            limits:
+              nvidia.com/gpu: {{ .Values.gpuCount }}
+            requests:
             reservations:
-              devices:
-                - driver: nvidia
-                  count: all
-                  capabilities: [gpu]
+              nvidia.com/gpu: {{ .Values.gpuCount }}
       restartPolicy: Always
 
 ---

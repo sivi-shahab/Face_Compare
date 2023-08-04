@@ -20,9 +20,9 @@ core:
   tag: 1.1.0-arcface-r100-gpu
   port: 3000
   replicas: 1
-  maxDetectSize: 640
-  uwsgiProcesses: 2
-  uwsgiThreads: 1
+  max_detect_size: 640
+  uwsgi_processes: 2
+  uwsgi_threads: 1
   gpuCount: 1
   name: cf-core
 
