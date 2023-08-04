@@ -15,20 +15,18 @@ spec:
         app: core
     spec:
       containers:
-        - name: {{ .Values.core.name }}  # Add the name field for the container
+        - name: {{ .Values.core.name }}
           env:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
           image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
           ports:
             - containerPort: {{ .Values.core.port }}
-          resources:  # Correct indentation for resources
-            reservations:
-              devices:
-                - driver: nvidia
-                  count: all
-                  capabilities: [gpu]
-          restartPolicy: Always  # Correct indentation for restartPolicy
+          resources:  # Define GPU resources here
+            limits:
+              nvidia.com/gpu: 1
+            requests:
+              nvidia.com/gpu: 1
 ---
 apiVersion: v1
 kind: Service
