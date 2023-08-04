@@ -33,7 +33,6 @@ spec:
             limits:
               nvidia.com/gpu: {{ .Values.gpuCount }}
             requests:
-            reservations:
               nvidia.com/gpu: {{ .Values.gpuCount }}
       restartPolicy: Always
 
