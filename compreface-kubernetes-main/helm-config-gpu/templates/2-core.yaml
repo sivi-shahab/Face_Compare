@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: compreface-core
   labels:
     app: core
+  name: {{ .Values.core.name }}
 spec:
-  replicas: 1  # You can set the desired number of replicas using .Values.core.replicas if needed
+  replicas: {{ .Values.core.replicas }} # You can adjust the number of replicas as needed
   selector:
     matchLabels:
       app: core
@@ -16,22 +16,26 @@ spec:
         app: core
     spec:
       containers:
-        - name: compreface-core
-          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
-          env:
+        - env:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
             - name: IMG_LENGTH_LIMIT
-              value: "{{ .Values.maxDetectSize }}"
+              value: "{{ .Values.max_detect_size }}"
             - name: UWSGI_PROCESSES
-              value: "{{ .Values.uwsgiProcesses | default "2" }}"
+              value: "{{ .Values.uwsgi_processes | default "2" }}"
             - name: UWSGI_THREADS
-              value: "{{ .Values.uwsgiThreads | default "1" }}"
+              value: "{{ .Values.uwsgi_threads | default "1" }}"
+          image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
+          ports:
+          - containerPort: {{ .Values.core.port }}
+          name: {{ .Values.core.name }}
           resources:
-            limits:
-              nvidia.com/gpu: {{ .Values.gpuCount }}
-            requests:
-              nvidia.com/gpu: {{ .Values.gpuCount }}
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: all
+                  capabilities: [gpu]
+      restartPolicy: Always
 
 ---
 apiVersion: v1
