@@ -29,13 +29,13 @@ spec:
           ports:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
-          resources:
-            limits:
-              nvidia.com/gpu: {{ .Values.gpuCount }}
-            requests:
-              nvidia.com/gpu: {{ .Values.gpuCount }}
-      nodeSelector:
-        cloud.google.com/gke-accelerator: nvidia-tesla-t4
+      #     resources:
+      #       limits:
+      #         nvidia.com/gpu: {{ .Values.gpuCount }}
+      #       requests:
+      #         nvidia.com/gpu: {{ .Values.gpuCount }}
+      # nodeSelector:
+      #   cloud.google.com/gke-accelerator: nvidia-tesla-t4
       restartPolicy: Always
 
 ---
@@ -49,3 +49,20 @@ spec:
     app: core
   ports:
     - port: {{ .Values.core.port }}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-gpu-pod
+spec:
+  containers:
+  - name: my-gpu-container
+    image: nvidia/cuda:11.0.3-runtime-ubuntu20.04
+    command: ["/bin/bash", "-c", "--"]
+    args: ["while true; do sleep 600; done;"]
+    resources:
+      limits:
+        nvidia.com/gpu: 2
+  nodeSelector:
+    cloud.google.com/gke-accelerator: nvidia-tesla-t4
