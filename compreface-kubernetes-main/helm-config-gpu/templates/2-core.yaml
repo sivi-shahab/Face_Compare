@@ -34,6 +34,8 @@ spec:
               nvidia.com/gpu: {{ .Values.gpuCount }}
             requests:
               nvidia.com/gpu: {{ .Values.gpuCount }}
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-t4
       restartPolicy: Always
 
 ---
