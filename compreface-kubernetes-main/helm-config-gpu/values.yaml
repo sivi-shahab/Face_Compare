@@ -23,6 +23,7 @@ core:
   max_detect_size: 640
   uwsgi_processes: 2
   uwsgi_threads: 1
+  gpuCount: 1
   name: cf-core
   # deploy:
   #   resources:
