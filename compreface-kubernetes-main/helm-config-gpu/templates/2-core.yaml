@@ -29,6 +29,13 @@ spec:
           ports:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: all
+                capabilities: [gpu]
       #     resources:
       #       limits:
       #         nvidia.com/gpu: {{ .Values.gpuCount }}

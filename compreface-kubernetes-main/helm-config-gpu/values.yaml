@@ -24,6 +24,13 @@ core:
   uwsgi_processes: 2
   uwsgi_threads: 1
   name: cf-core
+  # deploy:
+  #   resources:
+  #     reservations:
+  #       devices:
+  #         - driver: nvidia
+  #           count: all
+  #           capabilities: [gpu]
 
 api:
   repository: exadel/compreface-api
@@ -49,9 +56,9 @@ fe:
   replicas: 1
   name: cf-fe
 
-gpu:
-  type: "nvidia-tesla-t4"  # Replace this with your desired GPU_TYPE
-  quantity: 1
+# gpu:
+#   type: "nvidia-tesla-t4"  # Replace this with your desired GPU_TYPE
+#   quantity: 1
 
 
 imagePullSecrets: []
